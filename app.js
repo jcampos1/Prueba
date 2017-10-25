@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var auth = require('./auth');
+var document = require('./controllers/document');
 var middleware = require('./middleware');
 var fs = require('fs');
 
@@ -11,6 +12,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 app.set('port', 3000);
+
+app.use('/bower_Components', express.static('bower_Components'));
+app.use('/client', express.static('client'));
 
 // Importamos nuestros modelos, 
 // en este ejemplo nuestro modelo de usuario
@@ -28,14 +32,12 @@ router.get('/', function(req, res) {
     });
 });
 
-// Rutas de autenticación y login
-router.post('/auth/signup', auth.emailSignup);
+// Rutas
 router.post('/auth/login', auth.emailLogin);
 
 // Ruta solo accesible si estás autenticado
-router.get('/private',middleware.ensureAuthenticated, function(req, res) {
-    res.send("Tienes acceso");
-} );
+router.get('/api/documents',middleware.ensureAuthenticated, document.list);
+router.post('/api/documents',middleware.ensureAuthenticated, document.create);
 
 app.use(router);
 

@@ -1,35 +1,30 @@
 var service = require('./services');
-var path = require('path');
-var users = require(path.resolve(__dirname, 'user.json'));
 
-exports.emailSignup = function(req, res) {
-	var user = new User({
-    	// Creamos el usuario con los campos
-        // que definamos en el Schema
-        // nombre, email, etc...
-    });
-    
-    user.save(function(err){
-    	return res
-    		.status(200)
-        	.send({token: service.createToken(user)});
-    });
-};
+var users = [
+        {"username": "jcampos1","password": "jc1","nombre": "Junior Campos"},
+        {"username": "fsilva","password": "fs","nombre": "Francisco Silva"}
+    ];
 
 exports.emailLogin = function(req, res) {
-    Object.keys(users).forEach(function(key) {
-        users.forEach(function(user) {
-            if ( req.body.username == user.username ){
-                console.log("Usuario encontrado");
-                if( req.body.password == user.password ) {
-                    console.log("Contrasena correcta");
-                    return res.status(200).send({token: service.createToken(user)});
-                }else{
-                    return res.status(401).send({error: "Unauthorized"});
-                }
+    var st = 404;
+    var obj = Object();
+    obj.error =  "User not found";
+    console.log("usuario a buscar: "+req.body.username);
+    console.log("contrasena a buscar: "+req.body.password);
+    users.forEach(function(user) {
+        console.log(user);
+        if ( req.body.username == user.username ){
+            console.log("Usuario encontrado");
+            if( req.body.password == user.password ) {
+                console.log("Contrasena correcta");
+                st = 200;
+                obj.token = service.createToken(user);
             }else{
-                return res.status(404).send({error: "User not found"});
+                console.log("Contrasena incorrecta");
+                st = 401;
+                obj.error = "Unauthorized";
             }
-        }, this);
-    });
+        }
+    }, this);
+    return res.status(st).send(obj);
 };

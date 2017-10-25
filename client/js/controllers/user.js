@@ -22,19 +22,21 @@ function SignUpController($auth, $location) {
     }
 }
 
-function LoginController($auth, $location) {
-	var vm = this;
+function LoginController($auth, $location, $log, $http) {
+    var vm = this;
     this.login = function(){
     	$auth.login({
-        	email: vm.email,
+        	username: vm.username,
             password: vm.password
         })
-        .then(function(){
-        	// Si se ha logueado correctamente, lo tratamos aquí.
-            // Podemos también redirigirle a una ruta
-            $location.path("/private")
+        .then(function(data){
+            $log.info("Respuesta", data);
+            $http.get("/sales");
+            $location.path("/document")
+            //$location.path("/private")
         })
         .catch(function(response){
+            
         	// Si ha habido errores llegamos a esta parte
         });
     }

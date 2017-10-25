@@ -11,12 +11,12 @@ angular
         $stateProvider
         	.state("home", {
             	url: "/",
-                templateUrl: "../views/index.html",
+                templateUrl: "client/views/home.html",
                 controller: "HomeController"
             })
             .state("login", {
             	url: "/login",
-                templateUrl: "../views/user/login.html",
+                templateUrl: "client/views/user/login.html",
                 controller: "LoginController",
                 controllerAs: "login"
             })
@@ -25,11 +25,17 @@ angular
                 templateUrl: null,
                 controller: "LogoutController"
             })
-            .state("private", {
-            	url: "/private",
-                templateUrl: "../views/document/create.html",
-                controller: "CreateController",
-                controllerAs: "create"
+            .state("document", {
+            	url: "/document",
+                templateUrl: "client/views/document/list.html",
+                controller: "DocumentController",
+                controllerAs: "vm"
+            })
+            .state("documentNew", {
+            	url: "/document/new",
+                templateUrl: "client/views/document/new.html",
+                controller: "DocumentNewController",
+                controllerAs: "vm"
             });
 
             $urlRouterProvider.otherwise('home');
