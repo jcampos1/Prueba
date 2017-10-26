@@ -34,8 +34,6 @@ router.get('/', function(req, res) {
 
 // Rutas
 router.post('/auth/login', auth.emailLogin);
-
-// Ruta solo accesible si estás autenticado
 router.get('/api/documents',middleware.ensureAuthenticated, document.list);
 router.post('/api/documents',middleware.ensureAuthenticated, document.create);
 

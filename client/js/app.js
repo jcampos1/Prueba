@@ -10,9 +10,10 @@ angular
         // Configuración de las rutas/estados
         $stateProvider
         	.state("home", {
-            	url: "/",
+            	url: "/home",
                 templateUrl: "client/views/home.html",
-                controller: "HomeController"
+                controller: "HomeController",
+                controllerAs: "login"
             })
             .state("login", {
             	url: "/login",
